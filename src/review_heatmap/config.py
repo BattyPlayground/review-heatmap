@@ -40,7 +40,7 @@ from aqt import mw
 from .consts import ADDON
 from .libaddon.anki.configmanager import ConfigManager
 
-__all__ = ["heatmap_colors", "heatmap_modes", "config_defaults", "config"]
+__all__ = ["heatmap_colors", "heatmap_modes", "heatmap_mode", "config_defaults", "config"]
 
 # Order is important for a predictable selection dropdown (anki20)
 # Preserving the (key, dict) tuple in case we need to provide additional

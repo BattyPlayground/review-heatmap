@@ -87,7 +87,7 @@ class HeatmapCreator(object):
 
     def generate(self, view="deckbrowser", limhist=None, limfcst=None):
         prefs = self.config["profile"]
-        data = self.activity.getData(limhist=limhist, limfcst=limfcst)
+        data = self.activity.getData(limhist=limhist, limfcst=limfcst, mode=self.config["synced"]["hmmode"])
 
         if not data:
             return html_main_element.format(content=html_info_nodata, classes="")
