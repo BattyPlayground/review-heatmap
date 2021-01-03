@@ -40,7 +40,7 @@ from aqt import mw
 from .consts import ADDON
 from .libaddon.anki.configmanager import ConfigManager
 
-__all__ = ["heatmap_colors", "heatmap_modes", "config_defaults", "config"]
+__all__ = ["heatmap_colors", "heatmap_modes", "heatmap_mode", "config_defaults", "config"]
 
 # Order is important for a predictable selection dropdown (anki20)
 # Preserving the (key, dict) tuple in case we need to provide additional
@@ -52,6 +52,13 @@ heatmap_colors = OrderedDict(
         ("ice", {"label": "Ice"}),
         ("magenta", {"label": "Magenta"}),
         ("flame", {"label": "Flame"}),
+    )
+)
+
+heatmap_mode = OrderedDict(
+    (
+        ("reviews", {"label": "Reviews"}),
+        ("time", {"label": "Time"}),
     )
 )
 
@@ -84,6 +91,7 @@ config_defaults = {
     "synced": {
         "colors": "lime",
         "mode": "year",
+        "hmmode": "reviews",
         "limdate": 0,
         "limhist": 0,
         "limfcst": 0,

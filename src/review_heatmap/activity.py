@@ -62,14 +62,16 @@ class ActivityReporter(object):
 
     def getData(self, limhist=None, limfcst=None, mode="reviews"):
         
-        if mode != "reviews":
+        if mode == "reviews":
+            time_limits = self._getTimeLimits(limhist, limfcst)
+            review_activity = self._getActivity(**self._reviewsData(time_limits))
+            return review_activity
+        elif mode == "time":
+            time_limits = self._getTimeLimits(limhist, limfcst)
+            review_activity = self._getTimeActivity(**self._reviewsTimeData(time_limits))
+            return review_activity
+        else:
             raise NotImplementedError("activity mode {} not implemented".format(mode))
-        
-        time_limits = self._getTimeLimits(limhist, limfcst)
-
-        review_activity = self._getActivity(**self._reviewsData(time_limits))
-
-        return review_activity
             
 
     # Activity calculations
@@ -149,12 +151,90 @@ class ActivityReporter(object):
             },
         }
 
+    def _getTimeActivity(self, history, forecast={}):
+        if not history:
+            return None
+
+        first_day = history[0][0] if history else None
+        last_day = forecast[-1][0] if forecast else None
+
+        # Stats: cumulative activity and streaks
+
+        streak_max = streak_cur = streak_last = 0
+        current = total = 0
+
+        for idx, item in enumerate(history):
+            current += 1
+            timestamp, time_day = item
+
+            try:
+                next_timestamp = history[idx + 1][0]
+            except IndexError:  # last item
+                streak_last = current
+                next_timestamp = None
+
+            if timestamp + 86400 != next_timestamp:  # >1 day gap. streak over.
+                if current > streak_max:
+                    streak_max = current
+                current = 0
+
+            total += time_day
+
+        days_learned = idx + 1
+
+        # Stats: current streak
+        if history[-1][0] in (self.today, self.today - 86400):
+            # last recorded date today or yesterday?
+            streak_cur = streak_last
+
+        # Stats: average count on days with activity
+        avg_cur = int(round(total / max(days_learned, 1)))
+
+        # Stats: percentage of days with activity
+        #
+        # NOTE: days_total is based on first recorded revlog entry, i.e. it is
+        # not the grand total of days since collection creation date / whatever
+        # history limits the user might have set. This value seems more
+        # desirable and motivating than the raw percentage of days learned
+        # in the date inclusion period.
+        days_total = (self.today - first_day) / 86400 + 1
+        if days_total == 1:
+            pdays = 100  # review history only extends to yesterday
+        else:
+            pdays = int(round((days_learned / days_total) * 100))
+
+        # Compose activity data
+        activity = dict(history)
+
+        if history[-1][0] == self.today:  # history takes precedence for today
+            activity[self.today] = history[-1][1]
+
+        return {
+            "activity": activity,
+            # individual cal-heatmap dates need to be in ms:
+            "start": first_day * 1000 if first_day else None,
+            "stop": last_day * 1000 if last_day else None,
+            "today": self.today * 1000,
+            "offset": self.offset,
+            "stats": {
+                "streak_max": {"type": "streak", "value": streak_max},
+                "streak_cur": {"type": "streak", "value": streak_cur},
+                "pct_days_active": {"type": "percentage", "value": pdays},
+                "activity_daily_avg": {"type": "cards", "value": avg_cur},
+            },
+        }
+
     # Mode-specific
 
     def _reviewsData(self, time_limits):
         return {
             "history": self._cardsDone(start=time_limits[0]),
             "forecast": self._cardsDue(start=self.today, stop=time_limits[1]),
+        }
+
+    def _reviewsTimeData(self, time_limits):
+        return {
+            "history": self._cardsTimeDone(start=time_limits[0]),
         }
 
     # Collection properties
@@ -380,6 +460,35 @@ GROUP BY day ORDER BY day""".format(
 
         res = self.col.db.all(cmd)
         
+        if isDebuggingOn():
+            logger.debug(res)
+
+        return res
+
+    def _cardsTimeDone(self, start=None):
+        offset = self.offset * 3600
+
+        lims = []
+        if start is not None:
+            lims.append("day >= {}".format(start))
+
+        deck_limit = self._revlogLimit()
+        if deck_limit:
+            lims.append(deck_limit)
+
+        lim = "WHERE " + " AND ".join(lims) if lims else ""
+
+        cmd = """
+SELECT CAST(STRFTIME('%s', id / 1000 - {}, 'unixepoch',
+                     'localtime', 'start of day') AS int)
+AS day, SUM(time)
+FROM revlog {}
+GROUP BY day ORDER BY day""".format(
+            offset, lim
+        )
+
+        res = self.col.db.all(cmd)
+
         if isDebuggingOn():
             logger.debug(res)
 

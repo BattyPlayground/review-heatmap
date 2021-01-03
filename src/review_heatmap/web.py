@@ -38,6 +38,7 @@ from .libaddon.platform import JSPY_BRIDGE, PLATFORM
 __all__ = ["html_main_element", "html_heatmap", "html_streak", "html_info_nodata"]
 
 html_main_element = """
+<script type="text/javascript" src="qrc:/review_heatmap/web/moment.min.js"></script>
 <script type="text/javascript" src="qrc:/review_heatmap/web/d3.min.js"></script>
 <script type="text/javascript" src="qrc:/review_heatmap/web/cal-heatmap.js"></script>
 <link rel="stylesheet" href="qrc:/review_heatmap/web/cal-heatmap.css">

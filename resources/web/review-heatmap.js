@@ -71,6 +71,29 @@ function tzOffsetByTimestamp(timestamp) {
     return date.getTimezoneOffset() * 60;
 }
 
+function getDurationString(milis) {
+    var x = typeof milis === "string" ? Number(milis.replace(/[.,]/g, '')) : milis;
+    var tempTime = moment.duration(x);
+    var hours = Math.floor(tempTime.asHours());
+    var min = tempTime.minutes();
+    var sec = tempTime.seconds();
+    var ms = tempTime.milliseconds();
+
+    if (hours > 0) {
+        return `${hours}:${pad(min, 2)}:${pad(sec, 2)}.${pad(ms, 3)}`;
+    } else if (min > 0) {
+        return `${min}:${pad(sec, 2)}.${pad(ms, 3)}`;
+    } else if (sec > 0) {
+        return `${sec}.${pad(ms, 3)}`;
+    } else {
+        return '0';
+    }
+}
+
+function pad(value, by) {
+    return `${value}`.padStart(by, '0');
+}
+
 // Heatmap
 // ##########################################################################
 
@@ -79,34 +102,34 @@ function initHeatmap(options, data) {
     var calMinDate = applyDateOffset(new Date(options.start));
     var calMaxDate = applyDateOffset(new Date(options.stop));
     var calTodayDate = applyDateOffset(new Date(options.today));
-    
+
     // Running overview of 6-month activity in month view:
     if (options.domain === "month") {
         padding = options.range / 2;
         // TODO: fix
         paddingLower = Math.round(padding - 1);
         paddingUpper = Math.round(padding + 1);
-        
+
         calStartDate.setMonth(calStartDate.getMonth() - paddingLower);
         calStartDate.setDate(1);
-        
+
         // Start at first data point if history < 6 months
         if (calMinDate.getTime() > calStartDate.getTime()) {
             calStartDate = calMinDate;
         }
-        
+
         tempDate = new Date(calTodayDate);
         tempDate.setMonth(tempDate.getMonth() + paddingUpper)
         tempDate.setDate(1);
-        
+
         // Always go back to centered view after scrolling back then forward
         if (tempDate.getTime() > calMaxDate.getTime()) {
             calMaxDate = tempDate;
         }
     }
-    
+
     var cal = new CalHeatMap();
-    
+
     // console.log("Date: options.today " + new Date(options.today))
     // console.log("Date: calTodayDate "+ calTodayDate)
     // console.log("Date: Date() "+ new Date())
@@ -133,21 +156,28 @@ function initHeatmap(options, data) {
             // format tooltips
             var timeNow = Date.now();
             if (isEmpty) {
-                if (timeNow < rawData.t) {
+                if (options.hmmode === 'time') {
+                    return fmt.date + " is in the <b>future</b> "
+                } else if (timeNow < rawData.t) {
                     label = "cards due";
                 } else {
                     label = "reviews";
                 }
                 tip = "<b>No</b> " + label + " on " + fmt.date;
             } else {
+                if (options.hmmode === 'time') {
+                    label = '';
+                    return "<b>" + getDurationString(fmt.count) + "</b> <b>spent</b> " + fmt.connector + " " + fmt.date
+                }
                 if (rawData.v < 0) {
                     count = -1 * fmt.count;
                     action = "due";
+                    label = Math.floor(rawData.v) === 1 ? "card" : "cards";
                 } else {
                     count = fmt.count;
                     action = "reviewed";
+                    label = Math.floor(rawData.v) === 1 ? "card" : "cards";
                 }
-                label = Math.abs(rawData.v) == 1 ? "card" : "cards";
                 tip = "<b>" + count + "</b> " + label + " <b>" + action + "</b> " + fmt.connector + " " + fmt.date;
             }
 
@@ -156,20 +186,21 @@ function initHeatmap(options, data) {
         onClick: function (date, nb) {
             // Click handler that shows cards assigned to a particular date
             // in Anki's card browser
-            
+
             if (nb === null || nb == 0) {
                 // No cards for that day. Preserve highlight and return.
-                cal.highlight(calTodayDate); return;
+                cal.highlight(calTodayDate);
+                return;
             }
-            
+
             // console.log(date)
 
             // Determine if review history or forecasts
             isHistory = nb >= 0;
-            
+
             // Apply deck limits
             cmd = options.whole ? "" : "deck:current ";
-            
+
             // Construct search command
             if (nb >= 0) { // Review log
                 // Use custom finder based on revlog ID range
@@ -184,10 +215,10 @@ function initHeatmap(options, data) {
                 diffDays = Math.round(diffSecs / 86400);
                 cmd += "prop:due=" + diffDays;
             }
-            
+
             // Invoke browser
             pybridge("revhm_browse:" + cmd);
-            
+
             // Update date highlight to include clicked on date AND today
             cal.highlight([calTodayDate, date]);
         },
@@ -213,7 +244,8 @@ function initHeatmap(options, data) {
                 var value = timestamps[timestamp];
                 timestamp = parseInt(timestamp, 10);
                 results[timestamp + tzOffsetByTimestamp(timestamp)] = value;
-            };
+            }
+            ;
             return results;
         },
         data: data
