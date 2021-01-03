@@ -55,6 +55,13 @@ heatmap_colors = OrderedDict(
     )
 )
 
+heatmap_mode = OrderedDict(
+    (
+        ("reviews", {"label": "Reviews"}),
+        ("time", {"label": "Time"}),
+    )
+)
+
 heatmap_modes = OrderedDict(
     (
         (
@@ -84,6 +91,7 @@ config_defaults = {
     "synced": {
         "colors": "lime",
         "mode": "year",
+        "hmmode": "reviews",
         "limdate": 0,
         "limhist": 0,
         "limfcst": 0,

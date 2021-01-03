@@ -40,7 +40,7 @@ from aqt.qt import *
 from aqt.studydeck import StudyDeck
 
 from ..activity import ActivityReporter
-from ..config import config, heatmap_colors, heatmap_modes
+from ..config import config, heatmap_colors, heatmap_modes, heatmap_mode
 from ..libaddon.gui.dialog_options import OptionsDialog
 from ..libaddon.platform import PLATFORM
 from .forms import options as qtform_options
@@ -61,6 +61,14 @@ class RevHmOptions(OptionsDialog):
                 # order is important (e.g. to set-up items before current item)
                 ("items", {"setter": "_setSelHmColorItems"}),
                 ("value", {"dataPath": "synced/colors"}),
+            ),
+        ),
+        (
+            "form.selHmMode",
+            (
+                # order is important (e.g. to set-up items before current item)
+                ("items", {"setter": "_setSelHmMode"}),
+                ("value", {"dataPath": "synced/hmmode"}),
             ),
         ),
         (
@@ -181,6 +189,9 @@ class RevHmOptions(OptionsDialog):
 
     def _setSelHmColorItems(self, data_val):
         return self._getComboItems(heatmap_colors)
+
+    def _setSelHmMode(self, data_val):
+        return self._getComboItems(heatmap_mode)
 
     def _setSelHmCalModeItems(self, data_val):
         return self._getComboItems(heatmap_modes)

@@ -391,6 +391,16 @@ with a coffee</string>
              </widget>
             </item>
             <item row="1" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Heatmap mode</string>
+              </property>
+              <property name="buddy">
+               <cstring>selHmMode</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
                <string>Calendar &amp;mode</string>
@@ -408,6 +418,13 @@ with a coffee</string>
              </widget>
             </item>
             <item row="1" column="1">
+             <widget class="QComboBox" name="selHmMode">
+              <property name="toolTip">
+               <string>Sets the heatmap mode of the add-on</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
              <widget class="QComboBox" name="selHmCalMode">
               <property name="toolTip">
                <string>Sets the display mode of the calendar</string>
@@ -800,6 +817,7 @@ with a coffee</string>
   <tabstop>btnPatreon</tabstop>
   <tabstop>btnCoffee</tabstop>
   <tabstop>selHmColor</tabstop>
+  <tabstop>selHmMode</tabstop>
   <tabstop>selHmCalMode</tabstop>
   <tabstop>cbHmMain</tabstop>
   <tabstop>cbHmDeck</tabstop>
