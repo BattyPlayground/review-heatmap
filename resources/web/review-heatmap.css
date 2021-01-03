@@ -419,6 +419,51 @@ select.hm-sel:active, select.hm-sel:focus {
 .night_mode .rh-theme-magenta .rh-col19{color: #fcc5c0}
 .night_mode .rh-theme-magenta .rh-col20{color: #fde0dd}
 
+/* purple */
+.rh-theme-purple .cal-heatmap-container .q11{fill: #df99ff}
+.rh-theme-purple .cal-heatmap-container .q12{fill: #d24dff}
+.rh-theme-purple .cal-heatmap-container .q13{fill: #cf66ff}
+.rh-theme-purple .cal-heatmap-container .q14{fill: #c64dff}
+.rh-theme-purple .cal-heatmap-container .q15{fill: #bf00ff}
+.rh-theme-purple .cal-heatmap-container .q16{fill: #9900cc}
+.rh-theme-purple .cal-heatmap-container .q17{fill: #8600b3}
+.rh-theme-purple .cal-heatmap-container .q18{fill: #730099}
+.rh-theme-purple .cal-heatmap-container .q19{fill: #600080}
+.rh-theme-purple .cal-heatmap-container .q20{fill: #4d0066}
+
+.rh-theme-purple .rh-col11{color: #df99ff}
+.rh-theme-purple .rh-col12{color: #d24dff}
+.rh-theme-purple .rh-col13{color: #cf66ff}
+.rh-theme-purple .rh-col14{color: #c64dff}
+.rh-theme-purple .rh-col15{color: #bf00ff}
+.rh-theme-purple .rh-col16{color: #9900cc}
+.rh-theme-purple .rh-col17{color: #8600b3}
+.rh-theme-purple .rh-col18{color: #730099}
+.rh-theme-purple .rh-col19{color: #600080}
+.rh-theme-purple .rh-col20{color: #4d0066}
+
+.night_mode .rh-theme-purple .cal-heatmap-container .q11{fill: #4d0066}
+.night_mode .rh-theme-purple .cal-heatmap-container .q12{fill: #600080}
+.night_mode .rh-theme-purple .cal-heatmap-container .q13{fill: #730099}
+.night_mode .rh-theme-purple .cal-heatmap-container .q14{fill: #8600b3}
+.night_mode .rh-theme-purple .cal-heatmap-container .q15{fill: #9900cc}
+.night_mode .rh-theme-purple .cal-heatmap-container .q16{fill: #bf00ff}
+.night_mode .rh-theme-purple .cal-heatmap-container .q17{fill: #c64dff}
+.night_mode .rh-theme-purple .cal-heatmap-container .q18{fill: #cf66ff}
+.night_mode .rh-theme-purple .cal-heatmap-container .q19{fill: #d24dff}
+.night_mode .rh-theme-purple .cal-heatmap-container .q20{fill: #df99ff}
+
+.night_mode .rh-theme-purple .rh-col11{color: #4d0066}
+.night_mode .rh-theme-purple .rh-col12{color: #600080}
+.night_mode .rh-theme-purple .rh-col13{color: #730099}
+.night_mode .rh-theme-purple .rh-col14{color: #8600b3}
+.night_mode .rh-theme-purple .rh-col15{color: #9900cc}
+.night_mode .rh-theme-purple .rh-col16{color: #bf00ff}
+.night_mode .rh-theme-purple .rh-col17{color: #c64dff}
+.night_mode .rh-theme-purple .rh-col18{color: #cf66ff}
+.night_mode .rh-theme-purple .rh-col19{color: #d24dff}
+.night_mode .rh-theme-purple .rh-col20{color: #df99ff}
+
 
 /* flame */
 .rh-theme-flame .cal-heatmap-container .q11{fill: #ffeda0}

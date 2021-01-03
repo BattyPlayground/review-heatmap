@@ -51,6 +51,7 @@ heatmap_colors = OrderedDict(
         ("olive", {"label": "Olive"}),
         ("ice", {"label": "Ice"}),
         ("magenta", {"label": "Magenta"}),
+        ("purple", {"label": "Purple"}),
         ("flame", {"label": "Flame"}),
     )
 )
