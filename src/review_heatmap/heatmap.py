@@ -105,7 +105,7 @@ class HeatmapCreator(object):
             classes.append("rh-disable-heatmap")
 
         if prefs["display"][view] or prefs["statsvis"]:
-            stats = self._generateStatsElm(data, stats_legend)
+            stats = self._generateStatsElm(data, stats_legend, self.config["synced"]["hmmode"])
         else:
             classes.append("rh-disable-stats")
 
@@ -128,9 +128,11 @@ class HeatmapCreator(object):
 
     def _generateHeatmapElm(self, data, dynamic_legend):
         mode = heatmap_modes[self.config["synced"]["mode"]]
+        hmmode = self.config["synced"]["hmmode"]
 
         # TODO: pass on "whole" to govern browser link "deck:current" addition
         options = {
+            "hmmode": hmmode,
             "domain": mode["domain"],
             "subdomain": mode["subDomain"],
             "range": mode["range"],
@@ -147,7 +149,7 @@ class HeatmapCreator(object):
             options=json.dumps(options), data=json.dumps(data["activity"])
         )
 
-    def _generateStatsElm(self, data, dynamic_legend):
+    def _generateStatsElm(self, data, dynamic_legend, mode):
         stat_levels = {"cards": zip(dynamic_legend, self.css_colors)}
         stat_levels.update(self.stat_levels)
 
@@ -163,10 +165,14 @@ class HeatmapCreator(object):
                 if value <= threshold:
                     break
 
-            label = self._dayS(value, self.stat_units[stype])
 
+
+            if mode != "time" or name != "activity_daily_avg":
+                label = self._dayS(value, self.stat_units[stype])
+                format_dict["text_" + name] = label
+            else:
+                format_dict["text_" + name] = 'getDurationString({})'.format(value)
             format_dict["class_" + name] = css_class
-            format_dict["text_" + name] = label
 
         return html_streak.format(**format_dict)
 
