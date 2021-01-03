@@ -495,6 +495,25 @@ with a coffee</string>
         </widget>
        </item>
        <item>
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Additional options</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <widget class="QCheckBox" name="cbShowTotal">
+            <property name="toolTip">
+             <string>&lt;html&gt;Adds information about total reviews/time to stats.&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Show total time spent/reviewed cards in stats.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -823,6 +842,7 @@ with a coffee</string>
   <tabstop>cbHmDeck</tabstop>
   <tabstop>cbHmStats</tabstop>
   <tabstop>cbStreakAll</tabstop>
+  <tabstop>cbShowTotal</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>dateLimData</tabstop>
   <tabstop>spinLimHist</tabstop>

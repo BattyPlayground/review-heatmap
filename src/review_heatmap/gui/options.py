@@ -82,6 +82,7 @@ class RevHmOptions(OptionsDialog):
         ("form.cbHmDeck", (("value", {"dataPath": "profile/display/overview"}),)),
         ("form.cbHmStats", (("value", {"dataPath": "profile/display/stats"}),)),
         ("form.cbStreakAll", (("value", {"dataPath": "profile/statsvis"}),)),
+        ("form.cbShowTotal", (("value", {"dataPath": "profile/totalvis"}),)),
         ("form.spinLimHist", (("value", {"dataPath": "synced/limhist"}),)),
         ("form.spinLimFcst", (("value", {"dataPath": "synced/limfcst"}),)),
         (

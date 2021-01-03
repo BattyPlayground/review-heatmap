@@ -103,6 +103,7 @@ config_defaults = {
     "profile": {
         "display": {"deckbrowser": True, "overview": True, "stats": True},
         "statsvis": True,
+        "totalvis": False,
         "hotkeys": {"toggle": "Ctrl+R"},
         "version": ADDON.VERSION,
     },
