@@ -82,7 +82,7 @@ class RevHmOptions(OptionsDialog):
         ("form.cbHmDeck", (("value", {"dataPath": "profile/display/overview"}),)),
         ("form.cbHmStats", (("value", {"dataPath": "profile/display/stats"}),)),
         ("form.cbStreakAll", (("value", {"dataPath": "profile/statsvis"}),)),
-        ("form.cbShowTotal", (("value", {"dataPath": "profile/totalvis"}),)),
+        ("form.cbShowTotal", (("value", {"dataPath": "synced/totalvis"}),)),
         ("form.spinLimHist", (("value", {"dataPath": "synced/limhist"}),)),
         ("form.spinLimFcst", (("value", {"dataPath": "synced/limfcst"}),)),
         (
@@ -214,6 +214,9 @@ class RevHmOptions(OptionsDialog):
         if val == default:
             return 0
         return widget_val
+
+    def _getCbShowTotal(self, widget_val):
+        return False
 
 
 def invokeOptionsDialog(parent=None):

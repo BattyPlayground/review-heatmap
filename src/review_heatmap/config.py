@@ -93,6 +93,7 @@ config_defaults = {
         "colors": "lime",
         "mode": "year",
         "hmmode": "reviews",
+        "totalvis": False,
         "limdate": 0,
         "limhist": 0,
         "limfcst": 0,
@@ -103,7 +104,6 @@ config_defaults = {
     "profile": {
         "display": {"deckbrowser": True, "overview": True, "stats": True},
         "statsvis": True,
-        "totalvis": False,
         "hotkeys": {"toggle": "Ctrl+R"},
         "version": ADDON.VERSION,
     },

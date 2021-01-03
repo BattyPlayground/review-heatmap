@@ -87,8 +87,7 @@ class HeatmapCreator(object):
     def generate(self, view="deckbrowser", limhist=None, limfcst=None):
         prefs = self.config["profile"]
         synced = self.config["synced"]
-        hmmode = synced["hmmode"] if "hmmode" in synced.keys() else "reviews"
-        data = self.activity.getData(limhist=limhist, limfcst=limfcst, mode=hmmode)
+        data = self.activity.getData(limhist=limhist, limfcst=limfcst, mode=(synced["hmmode"]))
 
         if not data:
             return html_main_element.format(content=html_info_nodata, classes="")
@@ -106,8 +105,7 @@ class HeatmapCreator(object):
             classes.append("rh-disable-heatmap")
 
         if prefs["display"][view] or prefs["statsvis"]:
-            totalvis = prefs["totalvis"] if "totalvis" in prefs.keys() else False
-            stats = self._generateStatsElm(data, stats_legend, hmmode, totalvis)
+            stats = self._generateStatsElm(data, stats_legend, synced["hmmode"], synced["totalvis"])
         else:
             classes.append("rh-disable-stats")
 
@@ -167,7 +165,7 @@ class HeatmapCreator(object):
                 if value <= threshold:
                     break
 
-            if mode == "time" and name == "activity_daily_avg":
+            if mode == "time" and (name == "activity_daily_avg" or name == "activity_total"):
                 format_dict["text_" + name] = self._timeS(value)
             else:
                 label = self._dayS(value, self.stat_units[stype])
