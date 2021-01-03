@@ -171,7 +171,7 @@ class HeatmapCreator(object):
                 label = self._dayS(value, self.stat_units[stype])
                 format_dict["text_" + name] = label
             else:
-                format_dict["text_" + name] = 'getDurationString({})'.format(value)
+                format_dict["text_" + name] = self._timeS(value)
             format_dict["class_" + name] = css_class
 
         return html_streak.format(**format_dict)
@@ -197,6 +197,21 @@ class HeatmapCreator(object):
         if not term:
             return count
         return "{} {}{}".format(str(count), term, "s" if abs(count) > 1 else "")
+
+    def _timeS(self, count):
+        time_int = int(count)
+        hours, remainder = divmod(time_int, 60 * 60 * 1000)
+        minutes, remainder = divmod(remainder, 60 * 1000)
+        seconds, milis = divmod(remainder, 1000)
+        if hours > 0:
+            return '{:02}:{:02}:{:02}.{:03}'.format(int(hours), int(minutes), int(seconds), int(milis))
+        if minutes > 0:
+            return '{:02}:{:02}.{:03}'.format(int(minutes), int(seconds), int(milis))
+        if seconds > 0:
+            return '{:02}.{:03}'.format(int(seconds), int(milis))
+        if milis > 0:
+            return '0.{:03}'.format(int(milis))
+        return '0'
 
     def _saveCurrentPerf(self, data):
         """
