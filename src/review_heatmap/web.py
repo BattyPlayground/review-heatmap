@@ -96,8 +96,8 @@ html_heatmap = """
 html_streak = """
 <div class="streak">
     <span class="streak-info">Daily average:</span>
-    <span title="Average reviews on active days" id="avrga"
-        class="sstats {class_activity_daily_avg}"></span>
+    <span title="Average reviews on active days"
+        class="sstats {class_activity_daily_avg}">{text_activity_daily_avg}</span>
     <span class="streak-info">Days learned:</span>
     <span title="Percentage of days with review activity over entire review history"
         class="sstats {class_pct_days_active}">{text_pct_days_active}%</span>
@@ -108,9 +108,6 @@ html_streak = """
     <span title="Current card review activity streak. All types of repetitions included."
         class="sstats {class_streak_cur}">{text_streak_cur}</span>
 </div>
-<script>
-    document.getElementById("avrga").innerHTMML = {text_activity_daily_avg};
-</script>
 """
 
 html_info_nodata = """
