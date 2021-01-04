@@ -35,7 +35,7 @@ Static web components and templates
 
 from .libaddon.platform import JSPY_BRIDGE, PLATFORM
 
-__all__ = ["html_main_element", "html_heatmap", "html_streak", "html_info_nodata"]
+__all__ = ["html_main_element", "html_heatmap", "html_streak", "html_streak_with_totals", "html_info_nodata"]
 
 html_main_element = """
 <script type="text/javascript" src="qrc:/review_heatmap/web/moment.min.js"></script>
@@ -98,6 +98,26 @@ html_streak = """
     <span class="streak-info">Daily average:</span>
     <span title="Average reviews on active days"
         class="sstats {class_activity_daily_avg}">{text_activity_daily_avg}</span>
+    <span class="streak-info">Days learned:</span>
+    <span title="Percentage of days with review activity over entire review history"
+        class="sstats {class_pct_days_active}">{text_pct_days_active}%</span>
+    <span class="streak-info">Longest streak:</span>
+    <span title="Longest continuous streak of review activity. All types of repetitions included."
+        class="sstats {class_streak_max}">{text_streak_max}</span>
+    <span class="streak-info">Current streak:</span>
+    <span title="Current card review activity streak. All types of repetitions included."
+        class="sstats {class_streak_cur}">{text_streak_cur}</span>
+</div>
+"""
+
+html_streak_with_totals = """
+<div class="streak">
+    <span class="streak-info">Daily average:</span>
+    <span title="Average reviews on active days"
+        class="sstats {class_activity_daily_avg}">{text_activity_daily_avg}</span>
+    <span class="streak-info">Total:</span>
+    <span title="Average reviews on active days"
+        class="sstats {class_activity_total}">{text_activity_total}</span>
     <span class="streak-info">Days learned:</span>
     <span title="Percentage of days with review activity over entire review history"
         class="sstats {class_pct_days_active}">{text_pct_days_active}%</span>

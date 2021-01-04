@@ -45,7 +45,6 @@ __all__ = ["HeatmapCreator"]
 
 
 class HeatmapCreator(object):
-
     css_colors = (
         "rh-col0",
         "rh-col11",
@@ -87,7 +86,8 @@ class HeatmapCreator(object):
 
     def generate(self, view="deckbrowser", limhist=None, limfcst=None):
         prefs = self.config["profile"]
-        data = self.activity.getData(limhist=limhist, limfcst=limfcst, mode=self.config["synced"]["hmmode"])
+        synced = self.config["synced"]
+        data = self.activity.getData(limhist=limhist, limfcst=limfcst, mode=(synced["hmmode"]))
 
         if not data:
             return html_main_element.format(content=html_info_nodata, classes="")
@@ -105,7 +105,7 @@ class HeatmapCreator(object):
             classes.append("rh-disable-heatmap")
 
         if prefs["display"][view] or prefs["statsvis"]:
-            stats = self._generateStatsElm(data, stats_legend, self.config["synced"]["hmmode"])
+            stats = self._generateStatsElm(data, stats_legend, synced["hmmode"], synced["totalvis"])
         else:
             classes.append("rh-disable-stats")
 
@@ -149,7 +149,7 @@ class HeatmapCreator(object):
             options=json.dumps(options), data=json.dumps(data["activity"])
         )
 
-    def _generateStatsElm(self, data, dynamic_legend, mode):
+    def _generateStatsElm(self, data, dynamic_legend, mode, show_totals=False):
         stat_levels = {"cards": zip(dynamic_legend, self.css_colors)}
         stat_levels.update(self.stat_levels)
 
@@ -165,16 +165,14 @@ class HeatmapCreator(object):
                 if value <= threshold:
                     break
 
-
-
-            if mode != "time" or name != "activity_daily_avg":
+            if mode == "time" and (name == "activity_daily_avg" or name == "activity_total"):
+                format_dict["text_" + name] = self._timeS(value)
+            else:
                 label = self._dayS(value, self.stat_units[stype])
                 format_dict["text_" + name] = label
-            else:
-                format_dict["text_" + name] = self._timeS(value)
             format_dict["class_" + name] = css_class
 
-        return html_streak.format(**format_dict)
+        return html_streak_with_totals.format(**format_dict) if show_totals else html_streak.format(**format_dict)
 
     def _getDynamicLegends(self, average):
         legend = self._dynamicLegend(average)

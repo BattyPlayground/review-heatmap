@@ -93,6 +93,7 @@ config_defaults = {
         "colors": "lime",
         "mode": "year",
         "hmmode": "reviews",
+        "totalvis": False,
         "limdate": 0,
         "limhist": 0,
         "limfcst": 0,

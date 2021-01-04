@@ -148,6 +148,7 @@ class ActivityReporter(object):
                 "streak_cur": {"type": "streak", "value": streak_cur},
                 "pct_days_active": {"type": "percentage", "value": pdays},
                 "activity_daily_avg": {"type": "cards", "value": avg_cur},
+                "activity_total": {"type": "cards", "value": total},
             },
         }
 
@@ -221,6 +222,7 @@ class ActivityReporter(object):
                 "streak_cur": {"type": "streak", "value": streak_cur},
                 "pct_days_active": {"type": "percentage", "value": pdays},
                 "activity_daily_avg": {"type": "cards", "value": avg_cur},
+                "activity_total": {"type": "cards", "value": total},
             },
         }
 
